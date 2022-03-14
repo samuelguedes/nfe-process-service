@@ -23,5 +23,3 @@ Use o seguinte comando para iniciar o servidor:<br/>
 - RESTEasy JAX-RS ([guia](https://docs.jboss.org/resteasy/docs/3.0.9.Final/userguide/html_single/index.html))
 - MySQL ([guia](https://dev.mysql.com/doc/))
 
-Opcionais:
-- Docker([guia](https://docs.docker.com/))
