@@ -8,7 +8,7 @@
 ## Rodar a aplicação em modo de desenvolvimento
 
 ## Maven
-**Lembrando que precisa do PostgreSQL já esta rodando!**<br/>
+**Lembrando pré-requisito é o PostgreSQL já esta rodando e com BD nfe criado e schema public com permissões para o usuário postgres garantidos!**<br/>
 
 Use o seguinte comando para iniciar o servidor:<br/>
 <small>Obs: Esse comando deve ser executado na _raiz_ do projeto!</small>
