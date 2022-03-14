@@ -8,7 +8,7 @@
 ## Rodar a aplicação em modo de desenvolvimento
 
 ## Maven
-**Lembrando que precisa do MySQL já esta rodando!**<br/>
+**Lembrando que precisa do PostgreSQL já esta rodando!**<br/>
 
 Use o seguinte comando para iniciar o servidor:<br/>
 <small>Obs: Esse comando deve ser executado na _raiz_ do projeto!</small>
