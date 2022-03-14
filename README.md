@@ -4,6 +4,7 @@
  - Git
  - JDK 11+
  - Maven 3.8.1
+ - PostgreSQL
 
 ## Rodar a aplicação em modo de desenvolvimento
 
