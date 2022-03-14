@@ -30,20 +30,20 @@ public class NotaFiscalService {
     }
 
     public List<NotaFiscalDTO> listarNotasFiscais() {
-        List<NotaFiscalModel> listPessoas = notaFiscalDAO.listar();
-        return listPessoas.stream().map(NotaFiscalDTO::new).collect(Collectors.toList());
+        List<NotaFiscalModel> listNotasFiscais = notaFiscalDAO.listar();
+        return listNotasFiscais.stream().map(NotaFiscalDTO::new).collect(Collectors.toList());
     }
 
     @Transactional
-    public NotaFiscalModel save(NotaFiscalDTO pessoaDTO) {
-        NotaFiscalModel notaFiscalModel = new NotaFiscalModel(pessoaDTO);
+    public NotaFiscalModel save(NotaFiscalDTO notaFiscalDTO) {
+        NotaFiscalModel notaFiscalModel = new NotaFiscalModel(notaFiscalDTO);
         notaFiscalDAO.inserir(notaFiscalModel);
         return notaFiscalModel;
     }
 
     @Transactional
-    public NotaFiscalDTO atualizar(NotaFiscalDTO pessoaDTO) {
-        NotaFiscalModel notaFiscalModel = new NotaFiscalModel(pessoaDTO);
+    public NotaFiscalDTO atualizar(NotaFiscalDTO notaFiscalDTO) {
+        NotaFiscalModel notaFiscalModel = new NotaFiscalModel(notaFiscalDTO);
         notaFiscalDAO.atualizar(notaFiscalModel);
         return new NotaFiscalDTO(notaFiscalModel);
     }
