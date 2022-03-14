@@ -40,9 +40,9 @@ public class NotaFiscalResource {
 
     @DELETE
     @Path("/{idNotaFiscal}")
-    public Response deletarProduto(@PathParam("idNotaFiscal") Long idNotaFiscal) {
+    public Response deletarNotaFiscal(@PathParam("idNotaFiscal") Long idNotaFiscal) {
         notaFiscalService.remover(idNotaFiscal);
-        return Response.status(Response.Status.ACCEPTED).build();
+        return Response.status(Response.Status.OK).build();
     }
 
 }

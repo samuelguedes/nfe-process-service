@@ -11,7 +11,7 @@ import lombok.*;
 @Data
 @Entity
 @Table(name = "tb_duplicata")
-@NamedQueries({@NamedQuery(name = "NotaFiscalModel.consultarDuplicatPorIdNotaFiscal", query = "SELECT d FROM DuplicataModel d LEFT JOIN NotaFiscalModel n ON d.id = n.id WHERE n.id = :id")})
+@NamedQueries({@NamedQuery(name = "NotaFiscalModel.consultarDuplicatPorIdNotaFiscal", query = "SELECT d FROM DuplicataModel d WHERE d.id = :id")})
 public class DuplicataModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
