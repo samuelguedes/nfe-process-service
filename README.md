@@ -21,5 +21,4 @@ Use o seguinte comando para iniciar o servidor:<br/>
 - Maven ([guia](https://maven.apache.org/what-is-maven.html))
 - Hibernate ORM (Implementação do JPA) ([guia](https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html))
 - RESTEasy JAX-RS ([guia](https://docs.jboss.org/resteasy/docs/3.0.9.Final/userguide/html_single/index.html))
-- MySQL ([guia](https://dev.mysql.com/doc/))
-
+- PostgreSQL ([guia](https://www.postgresql.org/docs/))
