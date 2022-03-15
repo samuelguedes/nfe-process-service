@@ -10,10 +10,10 @@ import java.sql.Timestamp;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -27,32 +27,41 @@ import io.quarkus.scheduler.Scheduled;
 @ApplicationScoped
 public class ProcessadorArquivoScheduler  {
 
+	@ConfigProperty(name = "nfe-process-service.diretorio.input") 
+	private String pathInput;
+
+	@ConfigProperty(name = "nfe-process-service.diretorio.output") 
+	private String pathOutput;
+
+	@ConfigProperty(name = "nfe-process-service.diretorio.erro") 
+	private String pathErro;
+
 	@Inject
 	NotaFiscalService notaFiscalService;
 
-	@Transactional
     @Scheduled(every = "120s", identity = "processador-arquivo-schedule") 
     void schedule() {
+		File inputFolder = new File(pathInput);
+		File erroFolder = null;
 		File currentFile = null;
-		File inputFolder = new File("/home/samuel/desenv/projetos/nfe/arquivos/input/");
-		File outputFolder = new File("/home/samuel/desenv/projetos/nfe/arquivos/output/");
-		File erroFolder = new File("/home/samuel/desenv/projetos/nfe/arquivos/erro/");
+		File outputFolder = null;
 		try { 
 			for (final File fileEntry : inputFolder.listFiles()) {
- 				currentFile = new File(fileEntry.getPath());
-				outputFolder = new File("/home/samuel/desenv/projetos/nfe/arquivos/output/" + currentFile.getName());
-				erroFolder = new File("/home/samuel/desenv/projetos/nfe/arquivos/erro/" + currentFile.getName());
+				currentFile = new File(fileEntry.getPath());
+				erroFolder = new File(pathErro + currentFile.getName());
+				outputFolder = new File(pathOutput + currentFile.getName());
 
-				DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();  
-				DocumentBuilder db = dbf.newDocumentBuilder();  
-				Document doc = db.parse(currentFile);  
-				doc.getDocumentElement().normalize();
-				NodeList notaList = doc.getElementsByTagName("element");  
-				for (int itr = 0; itr < notaList.getLength(); itr++) {  
-					Node nota = notaList.item(itr);
-					if (nota.getNodeType() == Node.ELEMENT_NODE) {  
-						Element notaElemento = (Element) nota;
-						NotaFiscalDTO notaFiscalDTO = new NotaFiscalDTO();
+				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+				DocumentBuilder builder = factory.newDocumentBuilder();
+				
+				Document documento = builder.parse(currentFile);
+				documento.getDocumentElement().normalize();
+				NodeList notaList = documento.getElementsByTagName("notaFiscal");			
+				for (int temp = 0; temp < notaList.getLength(); temp++) {
+					NotaFiscalDTO notaFiscalDTO = new NotaFiscalDTO();
+					Node node = notaList.item(temp);
+					if (node.getNodeType() == Node.ELEMENT_NODE) {
+						Element notaElemento = (Element) node;
 						notaFiscalDTO.setChave(notaElemento.getElementsByTagName("chave").item(0).getTextContent());
 						notaFiscalDTO.setDataHoraRegistro(new Date(new Timestamp(Long.parseLong(notaElemento.getElementsByTagName("dataHoraRegistro").item(0).getTextContent())).getTime()));
 						notaFiscalDTO.setDescricaoStatus(notaElemento.getElementsByTagName("descricaoStatus").item(0).getTextContent());
@@ -61,10 +70,10 @@ public class ProcessadorArquivoScheduler  {
 						notaFiscalDTO.setNomeEmitente(notaElemento.getElementsByTagName("nomeEmitente").item(0).getTextContent());
 						notaFiscalDTO.setValor(Double.parseDouble(notaElemento.getElementsByTagName("valor").item(0).getTextContent()));
 						// NodeList duplicataList = notaElemento.getElementsByTagName("duplicatas");
-						// for (int dtr = 0; dtr < duplicataList.getLength(); dtr++) {  
-						// 	Node duplicata = duplicataList.item(dtr);
-						// 	if (nota.getNodeType() == Node.ELEMENT_NODE) {
-						// 		Element duplicataElemento = (Element) duplicata;
+						// for (int duplicataTemp = 0; duplicataTemp < duplicataList.getLength(); duplicataTemp++) {
+						// 	Node nodeDuplicata = notaList.item(duplicataTemp);
+						// 	if (nodeDuplicata.getNodeType() == Node.ELEMENT_NODE) {
+						// 		Element duplicataElemento = (Element) nodeDuplicata;
 						// 		DuplicataDTO duplicataDTO = new DuplicataDTO();
 						// 		duplicataDTO.setDataVencimento(new Date(new Timestamp(Long.parseLong(duplicataElemento.getElementsByTagName("dataVencimento").item(0).getTextContent())).getTime()));
 						// 		duplicataDTO.setNumeroParcela(Long.parseLong(duplicataElemento.getElementsByTagName("numeroParcela").item(0).getTextContent()));
@@ -73,20 +82,24 @@ public class ProcessadorArquivoScheduler  {
 						// 		notaFiscalDTO.getDuplicatas().add(duplicataDTO);
 						// 	}
 						// }
-						notaFiscalService.save(notaFiscalDTO);
 					}
+					notaFiscalService.inserir(notaFiscalDTO);
 				}
-				Files.copy(currentFile.toPath(), outputFolder.toPath(), REPLACE_EXISTING);
-				Files.delete(currentFile.toPath());
 			}
-		} catch (Exception e) {  
-			try {
-				Log.error(e.getMessage(), e);
-				Files.copy(currentFile.toPath(), erroFolder.toPath(), REPLACE_EXISTING);
-				Files.delete(currentFile.toPath());
-			} catch (IOException ioe) {
-				Log.error(ioe.getMessage(), ioe);
+			if(inputFolder.listFiles().length != 0){
+				moverArquivo(currentFile, outputFolder);
 			}
-		}
+		} catch (Exception e) {
+			Log.error(e.getMessage(), e);
+			moverArquivo(currentFile, erroFolder);
+		}	
     }
+
+	private void moverArquivo(File origem, File destino) {
+		try {
+			Files.move(origem.toPath(), destino.toPath(), REPLACE_EXISTING);
+		} catch (IOException ioe) {
+			Log.error(ioe.getMessage(), ioe);
+		}
+	}
 }

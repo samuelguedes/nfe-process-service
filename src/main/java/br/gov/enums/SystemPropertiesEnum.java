@@ -1,6 +1,5 @@
 package br.gov.enums;
 
-import br.gov.utils.SystemUtils;
 import lombok.Getter;
 
 public enum SystemPropertiesEnum {
@@ -14,10 +13,6 @@ public enum SystemPropertiesEnum {
 
 	SystemPropertiesEnum(String propriedade) {
 		this.propriedade = propriedade;
-	}
-
-	public String getValue() {
-		return SystemUtils.get(getPropriedade());
 	}
 
 }

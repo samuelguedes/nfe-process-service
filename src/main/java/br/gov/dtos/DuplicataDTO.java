@@ -34,6 +34,7 @@ public class DuplicataDTO implements Serializable {
         this.numeroParcela = duplicataModel.getNumeroParcela();
         this.valorParcela = duplicataModel.getValorParcela();
         this.dataVencimento = duplicataModel.getDataVencimento();
+        this.notaFiscalDTO = new NotaFiscalDTO(duplicataModel.getNotaFiscal());
     }
 
 }

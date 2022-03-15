@@ -1,14 +1,14 @@
 package br.gov.dtos;
 
-import br.gov.models.NotaFiscalModel;
-
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import lombok.*;
+import javax.validation.constraints.NotNull;
+
+import br.gov.models.NotaFiscalModel;
+import lombok.Data;
 
 @Data
 public class NotaFiscalDTO implements Serializable {
@@ -36,7 +36,6 @@ public class NotaFiscalDTO implements Serializable {
     @NotNull
     private String descricaoStatus;
 
-    @NotNull
     private List<DuplicataDTO> duplicatas = new ArrayList<>();
 
     public NotaFiscalDTO() {
@@ -51,6 +50,7 @@ public class NotaFiscalDTO implements Serializable {
         this.nomeDestinatario = notaFiscalModel.getNomeDestinatario();
         this.valor = notaFiscalModel.getValor();
         this.descricaoStatus = notaFiscalModel.getStatus().getDescricao();
+        // this.duplicatas = notaFiscalModel.getDuplicatas().stream().map(DuplicataDTO::new).collect(Collectors.toList());
     }
 
 }

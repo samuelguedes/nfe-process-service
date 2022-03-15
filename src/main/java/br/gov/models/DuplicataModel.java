@@ -11,7 +11,6 @@ import lombok.*;
 @Data
 @Entity
 @Table(name = "tb_duplicata")
-@NamedQueries({@NamedQuery(name = "NotaFiscalModel.consultarDuplicatPorIdNotaFiscal", query = "SELECT d FROM DuplicataModel d WHERE d.id = :id")})
 public class DuplicataModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -30,9 +29,9 @@ public class DuplicataModel implements Serializable {
     @Column(name = "dt_vencimento", nullable = false)
     private Date dataVencimento;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.PERSIST)
     @JoinColumn(name = "id_nota_fiscal")
-    private NotaFiscalModel notaFiscal;
+    private NotaFiscalModel notaFiscal = new NotaFiscalModel();
 
 
     public DuplicataModel() {

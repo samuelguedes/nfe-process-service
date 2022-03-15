@@ -10,13 +10,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import lombok.*;
 
 @Data
 @Entity
 @Table(name = "tb_nota_fiscal")
-@NamedQueries({@NamedQuery(name = "NotaFiscalModel.consultarNotaFiscalPorNumero", query = "SELECT n FROM NotaFiscalModel n LEFT JOIN DuplicataModel d ON n.id = d.id WHERE n.chave = :chave")})
 public class NotaFiscalModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -64,6 +64,7 @@ public class NotaFiscalModel implements Serializable {
         this.nomeDestinatario = notaFiscalDTO.getNomeDestinatario();
         this.valor = notaFiscalDTO.getValor();
         this.status = StatusProcessamentoEnum.obterPelaDescricao(notaFiscalDTO.getDescricaoStatus());
+        this.duplicatas = notaFiscalDTO.getDuplicatas().stream().map(DuplicataModel::new).collect(Collectors.toList());
     }
     
 }
