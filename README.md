@@ -8,15 +8,19 @@
 
 ## Criar diretório input, output e erro nos caminhos indicados:
 
+```shell script
 Ex: "/home/user/arquivos/input" * "Lembrando que este diretório é o mesmo input do projeto nfe-upload-service"
 Ex: "/home/user/arquivos/output"
 Ex: "/home/user/arquivos/erro"
+```
 
 ## Configurar no application.properties as variáveis abaixo:
 
+```shell script
 nfe-process-service.diretorio.input=/home/user/arquivos/input
 nfe-process-service.diretorio.output=/home/user/arquivos/output/
 nfe-process-service.diretorio.erro=/home/user/arquivos/erro/
+```
 
 ## Rodar a aplicação em modo de desenvolvimento
 
