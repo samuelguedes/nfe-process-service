@@ -19,6 +19,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import br.gov.dtos.DuplicataDTO;
 import br.gov.dtos.NotaFiscalDTO;
 import br.gov.services.NotaFiscalService;
 import io.quarkus.logging.Log;
@@ -69,19 +70,19 @@ public class ProcessadorArquivoScheduler  {
 						notaFiscalDTO.setNomeDestinatario(notaElemento.getElementsByTagName("nomeDestinatario").item(0).getTextContent());
 						notaFiscalDTO.setNomeEmitente(notaElemento.getElementsByTagName("nomeEmitente").item(0).getTextContent());
 						notaFiscalDTO.setValor(Double.parseDouble(notaElemento.getElementsByTagName("valor").item(0).getTextContent()));
-						// NodeList duplicataList = notaElemento.getElementsByTagName("duplicatas");
-						// for (int duplicataTemp = 0; duplicataTemp < duplicataList.getLength(); duplicataTemp++) {
-						// 	Node nodeDuplicata = notaList.item(duplicataTemp);
-						// 	if (nodeDuplicata.getNodeType() == Node.ELEMENT_NODE) {
-						// 		Element duplicataElemento = (Element) nodeDuplicata;
-						// 		DuplicataDTO duplicataDTO = new DuplicataDTO();
-						// 		duplicataDTO.setDataVencimento(new Date(new Timestamp(Long.parseLong(duplicataElemento.getElementsByTagName("dataVencimento").item(0).getTextContent())).getTime()));
-						// 		duplicataDTO.setNumeroParcela(Long.parseLong(duplicataElemento.getElementsByTagName("numeroParcela").item(0).getTextContent()));
-						// 		duplicataDTO.setValorParcela(Double.parseDouble(duplicataElemento.getElementsByTagName("valorParcela").item(0).getTextContent()));
-						// 		duplicataDTO.setNotaFiscalDTO(notaFiscalDTO);
-						// 		notaFiscalDTO.getDuplicatas().add(duplicataDTO);
-						// 	}
-						// }
+						NodeList duplicataList = notaElemento.getElementsByTagName("duplicatas");
+						for (int duplicataTemp = 0; duplicataTemp < duplicataList.getLength(); duplicataTemp++) {
+							Node nodeDuplicata = notaList.item(duplicataTemp);
+							if (nodeDuplicata.getNodeType() == Node.ELEMENT_NODE) {
+								Element duplicataElemento = (Element) nodeDuplicata;
+								DuplicataDTO duplicataDTO = new DuplicataDTO();
+								duplicataDTO.setDataVencimento(new Date(new Timestamp(Long.parseLong(duplicataElemento.getElementsByTagName("dataVencimento").item(0).getTextContent())).getTime()));
+								duplicataDTO.setNumeroParcela(Long.parseLong(duplicataElemento.getElementsByTagName("numeroParcela").item(0).getTextContent()));
+								duplicataDTO.setValorParcela(Double.parseDouble(duplicataElemento.getElementsByTagName("valorParcela").item(0).getTextContent()));
+								duplicataDTO.setNotaFiscalDTO(notaFiscalDTO);
+								notaFiscalDTO.getDuplicatas().add(duplicataDTO);
+							}
+						}
 					}
 					notaFiscalService.inserir(notaFiscalDTO);
 				}
