@@ -43,7 +43,7 @@ public class NotaFiscalService extends GenericService {
     @Transactional
     public NotaFiscalModel inserir(NotaFiscalDTO notaFiscalDTO) throws BadRequestException {
         NotaFiscalModel notaFiscalModel = new NotaFiscalModel(notaFiscalDTO);
-        if(!verificarExistenciaNota(notaFiscalModel)) {
+        if(!verificarExistenciaNota(notaFiscalModel, false)) {
             notaFiscalModel.setStatus(StatusProcessamentoEnum.PROCESSADA);
             notaFiscalDAO.inserir(notaFiscalModel);
         } else {
@@ -55,7 +55,7 @@ public class NotaFiscalService extends GenericService {
     @Transactional
     public NotaFiscalDTO atualizar(NotaFiscalDTO notaFiscalDTO) {
         NotaFiscalModel notaFiscalModel = new NotaFiscalModel(notaFiscalDTO);
-        if(!verificarExistenciaNota(notaFiscalModel)) {
+        if(!verificarExistenciaNota(notaFiscalModel, false)) {
             notaFiscalDAO.getEntityManager().detach(notaFiscalModel);
             notaFiscalDAO.atualizar(notaFiscalModel);
         } else {
@@ -78,7 +78,7 @@ public class NotaFiscalService extends GenericService {
         return notaFiscalModel;
     }
 
-    private boolean verificarExistenciaNota(NotaFiscalModel notaFiscalModel) {
+    private boolean verificarExistenciaNota(NotaFiscalModel notaFiscalModel, boolean update) {
         try {
             NotaFiscalModel noFiscalModel = notaFiscalDAO.consultarNotaFiscalPelaChave(notaFiscalModel.getChave());
             if(!Objects.isNull(noFiscalModel) 
