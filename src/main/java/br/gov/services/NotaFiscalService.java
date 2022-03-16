@@ -32,22 +32,24 @@ public class NotaFiscalService extends GenericService {
 
     public NotaFiscalDTO consultarNotaFiscalPorId(Long id) throws BadRequestException, NotFoundException {
         NotaFiscalModel notaFiscalModel = buscarPorId(id);
+        verificaSeObjetoFoiEncontrado(notaFiscalModel);
         return new NotaFiscalDTO(notaFiscalModel);
     }
 
     public List<NotaFiscalDTO> listarNotasFiscais() throws BadRequestException, NotFoundException {
         List<NotaFiscalModel> listNotasFiscais = notaFiscalDAO.listarNotaFiscal();
+        verificaSeObjetoFoiEncontrado(listNotasFiscais);
         return listNotasFiscais.stream().map(NotaFiscalDTO::new).collect(Collectors.toList());
     }
 
     @Transactional
     public NotaFiscalModel inserir(NotaFiscalDTO notaFiscalDTO) throws BadRequestException {
         NotaFiscalModel notaFiscalModel = new NotaFiscalModel(notaFiscalDTO);
-        if(!verificarExistenciaNota(notaFiscalModel, false)) {
+        if(!verificarExistenciaNota(notaFiscalModel)) {
             notaFiscalModel.setStatus(StatusProcessamentoEnum.PROCESSADA);
             notaFiscalDAO.inserir(notaFiscalModel);
         } else {
-            throw new BadRequestException("Nota fiscal já existe");
+            throw new BadRequestException("A nota fiscal já existe.");
         }
         return notaFiscalModel;
     }
@@ -55,11 +57,10 @@ public class NotaFiscalService extends GenericService {
     @Transactional
     public NotaFiscalDTO atualizar(NotaFiscalDTO notaFiscalDTO) {
         NotaFiscalModel notaFiscalModel = new NotaFiscalModel(notaFiscalDTO);
-        if(!verificarExistenciaNota(notaFiscalModel, false)) {
-            notaFiscalDAO.getEntityManager().detach(notaFiscalModel);
+        if(verificarExistenciaNota(notaFiscalModel)) {
             notaFiscalDAO.atualizar(notaFiscalModel);
         } else {
-            throw new BadRequestException("Nota fiscal já existe");
+            throw new BadRequestException("Nota fiscal inexistente.");
         }
         return new NotaFiscalDTO(notaFiscalModel);
     }
@@ -78,7 +79,7 @@ public class NotaFiscalService extends GenericService {
         return notaFiscalModel;
     }
 
-    private boolean verificarExistenciaNota(NotaFiscalModel notaFiscalModel, boolean update) {
+    private boolean verificarExistenciaNota(NotaFiscalModel notaFiscalModel) {
         try {
             NotaFiscalModel noFiscalModel = notaFiscalDAO.consultarNotaFiscalPelaChave(notaFiscalModel.getChave());
             if(!Objects.isNull(noFiscalModel) 
