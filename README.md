@@ -33,6 +33,11 @@ Use o seguinte comando para iniciar o servidor:<br/>
 ./mvnw clean compile quarkus:dev
 ```
 
+## API disponível em:
+
+```shell script
+http://localhost:2000/api/
+```
 
 #### Alguns guias relacionados:
 - Maven ([guia](https://maven.apache.org/what-is-maven.html))
