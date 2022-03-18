@@ -5,9 +5,30 @@
  - JDK 11+
  - Maven 3.8.1
  - PostgreSQL
+ 
+### Pré-Requisitos *opcionais*:
+ - docker
+ - docker-compose
+
+## *opcionais* Rodar o postgres no docker
+
+É necessário estar no diretório onde encontra-se o arquivo docker-compose.yml. Neste projeto encontra-se da pasta raiz.
+```shell script
+sudo docker ps
+sudo docker-compose up -d
+```
+
+## *opcionais* Parar o postgres no docker
+```shell script
+sudo docker-compose stop
+```
+
+## *opcionais* Remover imagem do postgres no docker
+```shell script
+sudo docker-compose rm
+```
 
 ## Criar diretório input, output e erro nos caminhos indicados:
-
 ```shell script
 Ex: "/home/user/arquivos/input" * "Lembrando que este diretório é o mesmo input do projeto nfe-upload-service"
 Ex: "/home/user/arquivos/output"
@@ -15,7 +36,6 @@ Ex: "/home/user/arquivos/erro"
 ```
 
 ## Configurar no application.properties as variáveis abaixo:
-
 ```shell script
 nfe-process-service.diretorio.input=/home/user/arquivos/input
 nfe-process-service.diretorio.output=/home/user/arquivos/output/
