@@ -16,7 +16,7 @@ public class DuplicataModel implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tb_duplicata_seq_gen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tb_duplicata_id_seq")
     @SequenceGenerator(name = "tb_duplicata_seq_gen", sequenceName = "tb_duplicata_id_seq")
     private Long id;
 

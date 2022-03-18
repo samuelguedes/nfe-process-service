@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  db-postgres:
+    image: postgres:11
+    environment:
+      POSTGRES_PASSWORD: "postgres"
+    ports:
+      - "5432:5432"
+    volumes:
+      - ~/postgres11-docker:/var/lib/postgresql/data
+    networks:
+      - postgres-network
+
+networks:
+  postgres-network:
+    driver: bridge

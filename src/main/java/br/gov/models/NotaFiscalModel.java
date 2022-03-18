@@ -22,7 +22,7 @@ public class NotaFiscalModel implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tb_nota_fiscal_seq_gen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tb_nota_fiscal_id_seq")
     @SequenceGenerator(name = "tb_nota_fiscal_seq_gen", sequenceName = "tb_nota_fiscal_id_seq")
     private Long id;
 

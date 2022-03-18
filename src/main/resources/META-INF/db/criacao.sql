@@ -1,56 +1,4 @@
--- DROP SCHEMA public;
-
 CREATE SCHEMA public AUTHORIZATION postgres;
-
--- DROP SEQUENCE public.tb_duplicata_id_seq;
-
-CREATE SEQUENCE public.tb_duplicata_id_seq
-	INCREMENT BY 1
-	MINVALUE 1
-	MAXVALUE 2147483647
-	START 2
-	CACHE 1
-	NO CYCLE;
-
--- Permissions
-
-ALTER SEQUENCE public.tb_duplicata_id_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.tb_duplicata_id_seq TO postgres;
-
--- DROP SEQUENCE public.tb_nota_fiscal_id_seq;
-
-CREATE SEQUENCE public.tb_nota_fiscal_id_seq
-	INCREMENT BY 50
-	MINVALUE 1
-	MAXVALUE 9223372036854775807
-	START 3
-	CACHE 1
-	NO CYCLE;
-
--- Permissions
-
-ALTER SEQUENCE public.tb_nota_fiscal_id_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.tb_nota_fiscal_id_seq TO postgres;
-
--- DROP SEQUENCE public.tb_st_processamento_id_seq;
-
-CREATE SEQUENCE public.tb_st_processamento_id_seq
-	INCREMENT BY 1
-	MINVALUE 1
-	MAXVALUE 2147483647
-	START 3
-	CACHE 1
-	NO CYCLE;
-
--- Permissions
-
-ALTER SEQUENCE public.tb_st_processamento_id_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.tb_st_processamento_id_seq TO postgres;
--- public.tb_st_processamento definition
-
--- Drop table
-
--- DROP TABLE public.tb_st_processamento;
 
 CREATE TABLE public.tb_st_processamento (
 	id serial4 NOT NULL,
@@ -64,12 +12,6 @@ CREATE TABLE public.tb_st_processamento (
 ALTER TABLE public.tb_st_processamento OWNER TO postgres;
 GRANT ALL ON TABLE public.tb_st_processamento TO postgres;
 
-
--- public.tb_nota_fiscal definition
-
--- Drop table
-
--- DROP TABLE public.tb_nota_fiscal;
 
 CREATE TABLE public.tb_nota_fiscal (
 	id int4 NOT NULL,
@@ -94,12 +36,19 @@ COMMENT ON COLUMN public.tb_nota_fiscal.id_st_processamento IS '1 - "Em processa
 ALTER TABLE public.tb_nota_fiscal OWNER TO postgres;
 GRANT ALL ON TABLE public.tb_nota_fiscal TO postgres;
 
+CREATE SEQUENCE public.tb_nota_fiscal_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 2
+	CACHE 1
+	NO CYCLE;
 
--- public.tb_duplicata definition
+-- Permissions
 
--- Drop table
+ALTER SEQUENCE public.tb_nota_fiscal_id_seq OWNER TO postgres;
+GRANT ALL ON SEQUENCE public.tb_nota_fiscal_id_seq TO postgres;
 
--- DROP TABLE public.tb_duplicata;
 
 CREATE TABLE public.tb_duplicata (
 	id serial4 NOT NULL,
@@ -117,13 +66,10 @@ ALTER TABLE public.tb_duplicata OWNER TO postgres;
 GRANT ALL ON TABLE public.tb_duplicata TO postgres;
 
 
-
-
 -- Permissions
 
+GRANT ALL ON DATABASE nfe TO postgres;
 GRANT ALL ON SCHEMA public TO postgres;
-
-
 
 
 -- Iserts
